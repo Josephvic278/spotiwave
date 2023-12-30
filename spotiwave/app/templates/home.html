@@ -1,1 +1,41 @@
-<h1>Home</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Title Here</title>
+</head>
+<body>
+  <form method="post" target="{% url 'home' %}">
+   {% csrf_token %}
+    <input type="text" placeholder="search" name="search">
+    <input type="submit" value="Search">
+  </form>
+  
+  {% if search_result != None %}
+    {% for get_data in search_result.albums.items %}
+    <div class="artists">
+      {% for get_artist in get_data.artists %}
+      <div class="artists_name">
+        <p>{{get_artist.name}}</p>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="album_image">
+      {% for album_image in get_data.images %}
+        {% if album_image.height == 640 and album_image.width == 640 %}
+          <img src="{{album_image.url}}" alt="" />
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="album_name">
+      {{get_data.name}}
+    </div>
+    <div class="">
+      {{get_data.release_date}}
+    </div>
+      <h1>-------</h1>
+    {% endfor %}
+  {% endif %}
+</body>
+</html>
